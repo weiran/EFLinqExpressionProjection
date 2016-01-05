@@ -9,7 +9,7 @@
     <ProjectGuid>{C8FC2631-8BB0-4BEA-AB92-1D3A618D98B3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EFLinqExpressionProjection.Test</RootNamespace>
+    <RootNamespace>LinqExpressionProjection.Test</RootNamespace>
     <AssemblyName>EFLinqExpressionProjection.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
