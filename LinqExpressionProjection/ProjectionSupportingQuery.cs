@@ -78,4 +78,34 @@ namespace LinqExpressionProjection
             return Task.FromResult(_query.InnerQuery.Provider.Execute<TResult>(expression.ExpandExpressionsForProjection()));
         }
     }
+
+    class AsyncEnumerator<T> : IDbAsyncEnumerator<T>
+    {
+        private readonly IEnumerator<T> _inner;
+
+        public AsyncEnumerator(IEnumerator<T> inner)
+        {
+            _inner = inner;
+        }
+
+        public void Dispose()
+        {
+            _inner.Dispose();
+        }
+
+        public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_inner.MoveNext());
+        }
+
+        public T Current
+        {
+            get { return _inner.Current; }
+        }
+
+        object IDbAsyncEnumerator.Current
+        {
+            get { return Current; }
+        }
+    }
 }
