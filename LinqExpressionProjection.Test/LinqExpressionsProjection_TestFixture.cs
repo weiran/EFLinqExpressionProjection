@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Text;
-using System.Collections.Generic;
 using System.Linq;
 using LinqExpressionProjection.Test.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -277,11 +275,11 @@ namespace LinqExpressionProjection.Test
                 Project p1 = ctx.Projects.Add(new Project());
                 Project p2 = ctx.Projects.Add(new Project());
 
-                ctx.Subprojects.Add(new Subproject() { Area = 100, Project = p1 });
-                ctx.Subprojects.Add(new Subproject() { Area = 200, Project = p1 });
-                ctx.Subprojects.Add(new Subproject() { Area = 350, Project = p2 });
-                ctx.Subprojects.Add(new Subproject() { Area = 450, Project = p2 });
-                ctx.Subprojects.Add(new Subproject() { Area = 10000, Project = p2 });
+                ctx.Subprojects.Add(new Subproject { Area = 100, Project = p1 });
+                ctx.Subprojects.Add(new Subproject { Area = 200, Project = p1 });
+                ctx.Subprojects.Add(new Subproject { Area = 350, Project = p2 });
+                ctx.Subprojects.Add(new Subproject { Area = 450, Project = p2 });
+                ctx.Subprojects.Add(new Subproject { Area = 10000, Project = p2 });
 
                 ctx.SaveChanges();
             }
