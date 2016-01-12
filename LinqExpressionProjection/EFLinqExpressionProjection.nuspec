@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>EFLinqExpressionProjection</id>
-        <version>1.0.2</version>
+        <version>1.1.0</version>
         <title>LINQ Expression Projection (supports Entity Framework async)</title>
         <authors>Weiran Zhang</authors>
         <owners>Weiran Zhang</owners>
