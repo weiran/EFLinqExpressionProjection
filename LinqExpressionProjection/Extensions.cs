@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace LinqExpressionProjection
 {
@@ -19,12 +17,15 @@ namespace LinqExpressionProjection
             throw new NotSupportedException("'Project()' method cannot be invoked. Call 'AsExpressionProjectable()' on the collection being queried.");
         }
 
+        public static TResult Project2<TIn, TResult>(this Expression<Func<TIn, TResult>> expr, TIn input)
+        {
+            throw new NotSupportedException("'Project()' method cannot be invoked. Call 'AsExpressionProjectable()' on the collection being queried.");
+        }
 
         public static Expression ExpandExpressionsForProjection(this Expression expr)
         {
             Expression projectionsCorrected = new ProjectionExpressionExpander().Visit(expr);
             return projectionsCorrected;
         }
-
     }
 }

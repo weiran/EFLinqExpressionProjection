@@ -39,15 +39,33 @@ namespace LinqExpressionProjection
                 // and the tree producing the selector lambda:
                 visitedMethodCall = Visit(innerLambda.Body);
 
-                // The lambda takes a parameter, this parameter must be replaced by the parameter provided for the seelct lambda
+                // The lambda takes a parameter, this parameter must be replaced by the parameter provided for the select lambda
                 // Rebind parameter:
-                var map = new Dictionary<ParameterExpression, ParameterExpression>()
-                                  {
-                                      {
-                                          innerLambda.Parameters[0],
-                                          selectParameter
-                                          }
-                                  };
+                var map = new Dictionary<ParameterExpression, Expression>
+                          {
+                              { innerLambda.Parameters[0], selectParameter }
+                          };
+                visitedMethodCall = new ParameterRebinder(map).Visit(visitedMethodCall);
+            }
+
+            if (m.Method.Name == "Project2" && m.Method.DeclaringType == typeof(Extensions))
+            {
+                // rs-todo: next line could possibly be used to work out ParameterExpression for member access of expressions?
+                //bool isInstanceContext = (m.Arguments[0] as MemberExpression)?.Expression != null;
+
+                Expression projectionExpression = m.Arguments[0];
+
+                LambdaExpression projectionLambda = ExtractLambda(projectionExpression);
+
+                // Visit the lambda, essentially exctracting the lambda's expression tree
+                visitedMethodCall = Visit(projectionLambda.Body);
+
+                // Revisit the lambda's expression tree, replacing the lambda's parameter with the actual expression that results in the same return value
+                Expression lambdaParameterReplacement = m.Arguments[1];
+                var map = new Dictionary<ParameterExpression, Expression>
+                          {
+                              { projectionLambda.Parameters[0], lambdaParameterReplacement }
+                          };
                 visitedMethodCall = new ParameterRebinder(map).Visit(visitedMethodCall);
             }
 
@@ -63,6 +81,11 @@ namespace LinqExpressionProjection
             return visitedMethodCall;
         }
 
+        private static LambdaExpression ExtractLambda(Expression projectionExpression)
+        {
+            return Expression.Lambda<Func<LambdaExpression>>(projectionExpression).Compile().Invoke();
+        }
+
         /// <summary>
         /// This method executes expression and expects it to return a lambda expression taking paramter of 
         /// certain type and returning a value of certain type.
@@ -72,6 +95,10 @@ namespace LinqExpressionProjection
             Exception innerException = null;
             try
             {
+                // rs-todo: rem:
+                //ParameterExpression memberExpression = (projectionExpression as MemberExpression)?.Expression as ParameterExpression;
+				//Expression<Func<LambdaExpression>> executionLambda = Expression.Lambda<Func<LambdaExpression>>(projectionExpression, memberExpression);
+
                 Expression<Func<LambdaExpression>> executionLambda = Expression.Lambda<Func<LambdaExpression>>(projectionExpression);
                 LambdaExpression extractedLambda = executionLambda.Compile().Invoke();
                 if (extractedLambda != null
@@ -87,6 +114,17 @@ namespace LinqExpressionProjection
             }
             throw new InvalidOperationException(string.Format("Lambda expression with parameter of type '{0}' and return type '{1}' was not located after Project() call ({2})", parameterType, returnType, projectionExpression), innerException);
         }
+
+        // rs-todo: rem:
+        //private ParameterExpression GetSelectParameter2(MethodCallExpression selectExpression)
+        //{
+        //    LambdaExpression selectionLambda = SkipUnwantedExpressions(selectExpression.Arguments[0]) as LambdaExpression;
+        //    if (selectionLambda != null)
+        //    {
+        //        return selectionLambda.Parameters[0];
+        //    }
+        //    throw new InvalidOperationException(string.Format("Lambda not found in select expression '{0}'", selectExpression));
+        //}
 
         private ParameterExpression GetSelectParameter(MethodCallExpression selectExpression)
         {
