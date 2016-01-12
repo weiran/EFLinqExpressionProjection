@@ -14,9 +14,6 @@ namespace LinqExpressionProjection
         {
             if (m.Method.Name == "Project" && m.Method.DeclaringType == typeof(Extensions))
             {
-                // rs-todo: next line could possibly be used to work out ParameterExpression for member access of expressions?
-                //bool isInstanceContext = (m.Arguments[0] as MemberExpression)?.Expression != null;
-
                 Expression projectionExpression = m.Arguments[0];
 
                 LambdaExpression projectionLambda = ExtractLambda(projectionExpression);

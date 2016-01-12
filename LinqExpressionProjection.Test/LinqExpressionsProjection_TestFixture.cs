@@ -213,32 +213,6 @@ namespace LinqExpressionProjection.Test
             }
         }
 
-        // rs-todo: investigate whether can get this working - currently throws error: 
-        // System.InvalidOperationException: variable 'subproject' of type 'LinqExpressionProjection.Test.Model.Subproject' referenced from scope '', but it is not defined
-        //public class Subproject
-        //{
-        //    ...
-        //    public readonly Expression<Func<Subproject, string>> BasicMemberFieldExpression = subProject => "Area: " + subProject.Area;
-        //    ...
-        //}
-        // possibly use Expression.Parameter(entityType, "entity"), but we don't know those details at compile time
-        //[TestMethod]
-        //public void Can_Project_Basic_MemberFieldExpression()
-        //{
-        //    using (var ctx = new ProjectsDbContext())
-        //    {
-        //        var subprojects = ctx.Subprojects.AsExpressionProjectable().Select(
-        //            subproject => new
-        //            {
-        //                subproject,
-        //                testResult = subproject.BasicMemberFieldExpression.Project2(subproject)
-        //            }).ToArray();
-        //
-        //        Assert.AreEqual("BasicStaticFieldExpression - Area: 100", subprojects.ElementAt(0).testResult);
-        //        Assert.AreEqual("BasicStaticFieldExpression - Area: 450", subprojects.ElementAt(3).testResult);
-        //    }
-        //}
-
         private static class TestExpressions
         {
             public static readonly Expression<Func<Subproject, string>> BasicMemberExpression = subProject => "Area: " + subProject.Area;
