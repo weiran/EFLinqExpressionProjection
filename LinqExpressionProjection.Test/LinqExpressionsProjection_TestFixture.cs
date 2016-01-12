@@ -30,8 +30,8 @@ namespace LinqExpressionProjection.Test
         public Expression<Func<Project, double>> GetProjectAverageEffectiveAreaSelectorWithLogic(bool isOverThousandIncluded = false)
         {
             return isOverThousandIncluded
-            ? (Expression<Func<Project, double>>) ((Project proj) => proj.Subprojects.Where(sp => sp.Area < 1000).Average(sp => sp.Area))
-            : (Project proj) => proj.Subprojects.Average(sp => sp.Area);
+                       ? (Expression<Func<Project, double>>)((Project proj) => proj.Subprojects.Where(sp => sp.Area < 1000).Average(sp => sp.Area))
+                       : (Project proj) => proj.Subprojects.Average(sp => sp.Area);
         }
 
         [ClassInitialize]
@@ -51,10 +51,10 @@ namespace LinqExpressionProjection.Test
             {
                 var v = (from p in ctx.Projects
                          select new
-                         {
-                             Project = p,
-                             AEA = localSelector
-                         }).ToArray();
+                                {
+                                    Project = p,
+                                    AEA = localSelector
+                                }).ToArray();
             }
         }
 
@@ -68,10 +68,10 @@ namespace LinqExpressionProjection.Test
             {
                 var projects = (from p in ctx.Projects
                                 select new
-                                {
-                                    Project = p,
-                                    AEA = localSelector.Project(p)
-                                }).ToArray();
+                                       {
+                                           Project = p,
+                                           AEA = localSelector.Project(p)
+                                       }).ToArray();
                 Assert.AreEqual(150, projects[0].AEA);
                 Assert.AreEqual(400, projects[1].AEA);
             }
@@ -86,10 +86,10 @@ namespace LinqExpressionProjection.Test
             {
                 var projects = (from p in ctx.Projects.AsExpressionProjectable()
                                 select new
-                                           {
-                                               Project = p,
-                                               AEA = localSelector.Project(p)
-                                           }).ToArray();
+                                       {
+                                           Project = p,
+                                           AEA = localSelector.Project(p)
+                                       }).ToArray();
                 Assert.AreEqual(150, projects[0].AEA);
                 Assert.AreEqual(400, projects[1].AEA);
             }
@@ -102,10 +102,10 @@ namespace LinqExpressionProjection.Test
             {
                 var projects = (from p in ctx.Projects.AsExpressionProjectable()
                                 select new
-                                           {
-                                               Project = p,
-                                               AEA = ProjectAverageEffectiveAreaSelectorStatic.Project(p)
-                                           }).ToArray();
+                                       {
+                                           Project = p,
+                                           AEA = ProjectAverageEffectiveAreaSelectorStatic.Project(p)
+                                       }).ToArray();
                 Assert.AreEqual(150, projects[0].AEA);
                 Assert.AreEqual(400, projects[1].AEA);
             }
@@ -119,10 +119,10 @@ namespace LinqExpressionProjection.Test
             {
                 var projects = (from p in ctx.Projects.AsExpressionProjectable()
                                 select new
-                                {
-                                    Project = p,
-                                    AEA = _projectAverageEffectiveAreaSelector.Project(p)
-                                }).ToArray();
+                                       {
+                                           Project = p,
+                                           AEA = _projectAverageEffectiveAreaSelector.Project(p)
+                                       }).ToArray();
                 Assert.AreEqual(150, projects[0].AEA);
                 Assert.AreEqual(400, projects[1].AEA);
             }
@@ -135,10 +135,10 @@ namespace LinqExpressionProjection.Test
             {
                 var projects = (from p in ctx.Projects.AsExpressionProjectable()
                                 select new
-                                {
-                                    Project = p,
-                                    AEA = GetProjectAverageEffectiveAreaSelectorStatic().Project(p)
-                                }).ToArray();
+                                       {
+                                           Project = p,
+                                           AEA = GetProjectAverageEffectiveAreaSelectorStatic().Project(p)
+                                       }).ToArray();
                 Assert.AreEqual(150, projects[0].AEA);
                 Assert.AreEqual(400, projects[1].AEA);
             }
@@ -151,10 +151,10 @@ namespace LinqExpressionProjection.Test
             {
                 var projects = (from p in ctx.Projects.AsExpressionProjectable()
                                 select new
-                                {
-                                    Project = p,
-                                    AEA = GetProjectAverageEffectiveAreaSelector().Project(p)
-                                }).ToArray();
+                                       {
+                                           Project = p,
+                                           AEA = GetProjectAverageEffectiveAreaSelector().Project(p)
+                                       }).ToArray();
                 Assert.AreEqual(150, projects[0].AEA);
                 Assert.AreEqual(400, projects[1].AEA);
             }
@@ -167,10 +167,10 @@ namespace LinqExpressionProjection.Test
             {
                 var projects = (from p in ctx.Projects.AsExpressionProjectable()
                                 select new
-                                {
-                                    Project = p,
-                                    AEA = GetProjectAverageEffectiveAreaSelectorWithLogic(false).Project(p)
-                                }).ToArray();
+                                       {
+                                           Project = p,
+                                           AEA = GetProjectAverageEffectiveAreaSelectorWithLogic(false).Project(p)
+                                       }).ToArray();
                 Assert.AreEqual(150, projects[0].AEA);
                 Assert.AreEqual(3600, projects[1].AEA);
             }
@@ -178,10 +178,10 @@ namespace LinqExpressionProjection.Test
             {
                 var projects = (from p in ctx.Projects.AsExpressionProjectable()
                                 select new
-                                {
-                                    Project = p,
-                                    AEA = GetProjectAverageEffectiveAreaSelectorWithLogic(true).Project(p)
-                                }).ToArray();
+                                       {
+                                           Project = p,
+                                           AEA = GetProjectAverageEffectiveAreaSelectorWithLogic(true).Project(p)
+                                       }).ToArray();
                 Assert.AreEqual(150, projects[0].AEA);
                 Assert.AreEqual(400, projects[1].AEA);
             }
@@ -270,10 +270,10 @@ namespace LinqExpressionProjection.Test
             {
                 var subprojects = ctx.Subprojects.AsExpressionProjectable().Select(
                     subproject => new
-                    {
-                        subproject,
-                        testResult = TestExpressions.MemberOfMemberExpression.Project(subproject.Project)
-                    }).ToArray();
+                                  {
+                                      subproject,
+                                      testResult = TestExpressions.MemberOfMemberExpression.Project(subproject.Project)
+                                  }).ToArray();
 
                 Assert.AreEqual("Subprojects Count: 2", subprojects.ElementAt(0).testResult);
                 Assert.AreEqual("Subprojects Count: 2", subprojects.ElementAt(1).testResult);
