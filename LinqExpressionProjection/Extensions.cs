@@ -17,7 +17,7 @@ namespace LinqExpressionProjection
             return new ProjectionSupportingQuery<T>(query);
         }
 
-        public static TResult Project<TIn, TResult>(this Expression<Func<TIn, TResult>> expr, TIn input)
+        public static TResult Project<TIn, TResult>(this Expression<Func<TIn, TResult>> expressionToProject, TIn inputToExpressionToProject)
         {
             throw new NotSupportedException("'Project()' method cannot be invoked. Call 'AsExpressionProjectable()' on the collection being queried.");
         }
