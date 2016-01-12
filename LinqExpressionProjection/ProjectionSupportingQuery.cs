@@ -33,6 +33,4 @@ namespace LinqExpressionProjection
         IDbAsyncEnumerator<T> IDbAsyncEnumerable<T>.GetAsyncEnumerator() { return new AsyncEnumerator<T>(_inner.AsEnumerable().GetEnumerator()); }
         public IDbAsyncEnumerator GetAsyncEnumerator() { return GetAsyncEnumerator(); }
     }
-
-
 }

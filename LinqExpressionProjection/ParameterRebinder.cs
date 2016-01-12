@@ -1,33 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace LinqExpressionProjection
 {
     public class ParameterRebinder : ExpressionVisitor
     {
-        private readonly Dictionary<ParameterExpression, ParameterExpression> map;
+        private readonly Dictionary<ParameterExpression, Expression> map;
 
-        public ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
+        public ParameterRebinder(Dictionary<ParameterExpression, Expression> map)
         {
-            this.map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
+            this.map = map ?? new Dictionary<ParameterExpression, Expression>();
         }
 
-        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map, Expression exp)
+        protected override Expression VisitParameter(ParameterExpression parameter)
         {
-            return new ParameterRebinder(map).Visit(exp);
-        }
-
-        protected override Expression VisitParameter(ParameterExpression p)
-        {
-            ParameterExpression replacement;
-            if (map.TryGetValue(p, out replacement))
-            {
-                p = replacement;
-            }
-            return base.VisitParameter(p);
+            return map.ContainsKey(parameter) ? Visit(map[parameter]) : base.VisitParameter(parameter);
         }
     }
 }
