@@ -2,19 +2,19 @@
 <package >
     <metadata>
         <id>EFLinqExpressionProjection</id>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <title>LINQ Expression Projection (supports Entity Framework async)</title>
         <authors>Weiran Zhang</authors>
         <owners>Weiran Zhang</owners>
         <licenseUrl>http://www.opensource.org/licenses/cddl1.php</licenseUrl>
-        <projectUrl>http://linqexprprojection.codeplex.com/</projectUrl>
+        <projectUrl>https://github.com/weiran/EFLinqExpressionProjection</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>
             With this little helper you can project in your LINQ Select() using expressions not written inside the LINQ query. This opens the door for expression reuse.
             This is a fork of the original LinqExpressionProjection project with added support for EF 6 async by Asher Barak.
         </description>
-        <releaseNotes>Initial release</releaseNotes>
-        <copyright>Copyright 2015</copyright>
+        <releaseNotes>Added support for IAsyncEnumerable</releaseNotes>
+        <copyright>Copyright 2016</copyright>
         <tags>Linq EF Async</tags>
     </metadata>
 </package>
