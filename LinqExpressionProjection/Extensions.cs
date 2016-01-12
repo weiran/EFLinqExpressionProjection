@@ -8,7 +8,10 @@ namespace LinqExpressionProjection
     {
         public static IQueryable<T> AsExpressionProjectable<T>(this IQueryable<T> query)
         {
-            if (query is ProjectionSupportingQuery<T>) return (ProjectionSupportingQuery<T>)query;
+            if (query is ProjectionSupportingQuery<T>)
+            {
+                return (ProjectionSupportingQuery<T>)query;
+            }
             return new ProjectionSupportingQuery<T>(query);
         }
 
