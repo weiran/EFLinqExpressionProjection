@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Linq.Expressions;
 
+// ReSharper disable UnusedParameter.Global
+
 namespace LinqExpressionProjection
 {
     public static class Extensions
@@ -15,12 +17,7 @@ namespace LinqExpressionProjection
             return new ProjectionSupportingQuery<T>(query);
         }
 
-        public static T Project<T>(this LambdaExpression expr)
-        {
-            throw new NotSupportedException("'Project()' method cannot be invoked. Call 'AsExpressionProjectable()' on the collection being queried.");
-        }
-
-        public static TResult Project2<TIn, TResult>(this Expression<Func<TIn, TResult>> expr, TIn input)
+        public static TResult Project<TIn, TResult>(this Expression<Func<TIn, TResult>> expr, TIn input)
         {
             throw new NotSupportedException("'Project()' method cannot be invoked. Call 'AsExpressionProjectable()' on the collection being queried.");
         }
