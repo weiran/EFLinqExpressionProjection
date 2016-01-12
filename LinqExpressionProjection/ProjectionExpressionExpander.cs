@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Linq.Expressions;
-using System.Collections.ObjectModel;
-using System.Reflection;
 
 namespace LinqExpressionProjection
 {
@@ -14,9 +10,7 @@ namespace LinqExpressionProjection
     /// </summary>
     class ProjectionExpressionExpander : ExpressionVisitor
     {
-        internal ProjectionExpressionExpander() { }
-
-        Stack<MethodCallExpression> _selectStack = new Stack<MethodCallExpression>();
+        readonly Stack<MethodCallExpression> _selectStack = new Stack<MethodCallExpression>();
 
         protected override Expression VisitMethodCall(MethodCallExpression m)
         {
@@ -90,15 +84,11 @@ namespace LinqExpressionProjection
         /// This method executes expression and expects it to return a lambda expression taking paramter of 
         /// certain type and returning a value of certain type.
         /// </summary>
-        private LambdaExpression GetInnerLambda(Expression projectionExpression, Type parameterType, Type returnType)
+        private static LambdaExpression GetInnerLambda(Expression projectionExpression, Type parameterType, Type returnType)
         {
             Exception innerException = null;
             try
             {
-                // rs-todo: rem:
-                //ParameterExpression memberExpression = (projectionExpression as MemberExpression)?.Expression as ParameterExpression;
-				//Expression<Func<LambdaExpression>> executionLambda = Expression.Lambda<Func<LambdaExpression>>(projectionExpression, memberExpression);
-
                 Expression<Func<LambdaExpression>> executionLambda = Expression.Lambda<Func<LambdaExpression>>(projectionExpression);
                 LambdaExpression extractedLambda = executionLambda.Compile().Invoke();
                 if (extractedLambda != null
@@ -115,17 +105,6 @@ namespace LinqExpressionProjection
             throw new InvalidOperationException(string.Format("Lambda expression with parameter of type '{0}' and return type '{1}' was not located after Project() call ({2})", parameterType, returnType, projectionExpression), innerException);
         }
 
-        // rs-todo: rem:
-        //private ParameterExpression GetSelectParameter2(MethodCallExpression selectExpression)
-        //{
-        //    LambdaExpression selectionLambda = SkipUnwantedExpressions(selectExpression.Arguments[0]) as LambdaExpression;
-        //    if (selectionLambda != null)
-        //    {
-        //        return selectionLambda.Parameters[0];
-        //    }
-        //    throw new InvalidOperationException(string.Format("Lambda not found in select expression '{0}'", selectExpression));
-        //}
-
         private ParameterExpression GetSelectParameter(MethodCallExpression selectExpression)
         {
             LambdaExpression selectionLambda = SkipUnwantedExpressions(selectExpression.Arguments[1]) as LambdaExpression;
@@ -136,7 +115,7 @@ namespace LinqExpressionProjection
             throw new InvalidOperationException(string.Format("Lambda not found in select expression '{0}'", selectExpression));
         }
 
-        private Expression SkipUnwantedExpressions(Expression expression)
+        private static Expression SkipUnwantedExpressions(Expression expression)
         {
             if (expression is UnaryExpression)
             {
