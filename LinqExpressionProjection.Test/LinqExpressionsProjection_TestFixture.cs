@@ -301,6 +301,78 @@ namespace LinqExpressionProjection.Test
             }
         }
 
+        [TestMethod]
+        public void Can_Project_ExpressionWith2Parameters()
+        {
+            Expression<Func<User, User, string>> projectionExpression = (user1, user2) => user1.Name + "::" + user2.Name;
+
+            using (var ctx = new ProjectsDbContext())
+            {
+                var projects = ctx.Projects.AsExpressionProjectable().Select(
+                    project => new
+                    {
+                        testResult = projectionExpression.Project(project.CreatedBy, project.ModifiedBy)
+                    }).ToArray();
+
+                Assert.AreEqual("user1::user3", projects.ElementAt(0).testResult);
+                Assert.AreEqual("user2::user4", projects.ElementAt(1).testResult);
+            }
+        }
+
+        [TestMethod]
+        public void Can_Project_ExpressionWith3Parameters()
+        {
+            Expression<Func<User, User, int, string>> projectionExpression = (user1, user2, x1) => user1.Name + "::" + user2.Name + "-" + x1;
+
+            using (var ctx = new ProjectsDbContext())
+            {
+                var projects = ctx.Projects.AsExpressionProjectable().Select(
+                    project => new
+                    {
+                        testResult = projectionExpression.Project(project.CreatedBy, project.ModifiedBy, 3 + 5)
+                    }).ToArray();
+
+                Assert.AreEqual("user1::user3-8", projects.ElementAt(0).testResult);
+                Assert.AreEqual("user2::user4-8", projects.ElementAt(1).testResult);
+            }
+        }
+
+        [TestMethod]
+        public void Can_Project_ExpressionWith4Parameters()
+        {
+            Expression<Func<User, User, int, string, string>> projectionExpression = (user1, user2, x1, x2) => user1.Name + "::" + user2.Name + "-" + x1 + "~" + x2;
+
+            using (var ctx = new ProjectsDbContext())
+            {
+                var projects = ctx.Projects.AsExpressionProjectable().Select(
+                    project => new
+                    {
+                        testResult = projectionExpression.Project(project.CreatedBy, project.ModifiedBy, 3 + 5, "test")
+                    }).ToArray();
+
+                Assert.AreEqual("user1::user3-8~test", projects.ElementAt(0).testResult);
+                Assert.AreEqual("user2::user4-8~test", projects.ElementAt(1).testResult);
+            }
+        }
+
+        [TestMethod]
+        public void Can_Project_ExpressionWith5Parameters()
+        {
+            Expression<Func<User, User, int, string, int, string>> projectionExpression = (user1, user2, x1, x2, x3) => user1.Name + "::" + user2.Name + "-" + x1 + "~" + x2 + "_" + x3;
+
+            using (var ctx = new ProjectsDbContext())
+            {
+                var projects = ctx.Projects.AsExpressionProjectable().Select(
+                    project => new
+                    {
+                        testResult = projectionExpression.Project(project.CreatedBy, project.ModifiedBy, 3 + 5, "test", 10 * 3)
+                    }).ToArray();
+
+                Assert.AreEqual("user1::user3-8~test_30", projects.ElementAt(0).testResult);
+                Assert.AreEqual("user2::user4-8~test_30", projects.ElementAt(1).testResult);
+            }
+        }
+
         private static void ClearDb()
         {
             using (var ctx = new ProjectsDbContext())

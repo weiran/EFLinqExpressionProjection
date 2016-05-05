@@ -22,12 +22,15 @@ namespace LinqExpressionProjection
                 Expression visitedMethodCall = Visit(projectionLambda.Body);
 
                 // Revisit the lambda's expression tree, replacing the lambda's parameter with the actual expression that results in the same return value
-                Expression lambdaParameterReplacement = m.Arguments[1];
-                var map = new Dictionary<ParameterExpression, Expression>
-                          {
-                              { projectionLambda.Parameters[0], lambdaParameterReplacement }
-                          };
-                visitedMethodCall = new ParameterRebinder(map).Visit(visitedMethodCall);
+                var parameterMap = new Dictionary<ParameterExpression, Expression>();
+
+                int lambdaParameterArgumentIndex = 1;
+                foreach (var parameter in projectionLambda.Parameters)
+                {
+                    parameterMap.Add(parameter, m.Arguments[lambdaParameterArgumentIndex++]);
+                }
+
+                visitedMethodCall = new ParameterRebinder(parameterMap).Visit(visitedMethodCall);
                 return visitedMethodCall;
             }
 
