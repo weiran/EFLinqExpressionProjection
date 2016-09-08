@@ -1,7 +1,7 @@
 
 # EFLinqExpressionProjecton
 
-This assembly enables ruse of LINQ logic in projections.
+This assembly enables reuse of LINQ expression logic in projections.
 
 ## Usage
 
@@ -12,6 +12,7 @@ code element) returning a selector of type `Expression<Func<TIn, TResult>>`.
 usages of `Project()` do not have to explicitly specify them.
 
 Example:
+
 ```cs
 var projects = await context.Projects
   .AsExpressionProjectable()
