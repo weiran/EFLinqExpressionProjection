@@ -1,7 +1,7 @@
 
 # EFLinqExpressionProjecton
 
-This assembly enables reuse of LINQ expression logic in projections.
+This project enables the reuse of LINQ expression logic in projections. This is a fork of [LINQ Expression Projection](https://github.com/AsherBarak/LINQ-Expression-Projection) but with support for async queries from Entity Framework 6 and later.
 
 ## Usage
 
@@ -15,9 +15,7 @@ Example:
 
 ```cs
 Expression<Func<Project, double>> averageEffectiveAreaExpression =
-    proj => proj.Subprojects
-                .Where(sp => sp.Area < 1000)
-                .Average(sp => sp.Area);
+  proj => proj.Subprojects.Average(sp => sp.Area);
 
 var projects = await context.Projects
   .AsExpressionProjectable()
