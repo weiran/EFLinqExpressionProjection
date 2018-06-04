@@ -14,12 +14,17 @@ usages of `Project()` do not have to explicitly specify them.
 Example:
 
 ```cs
+Expression<Func<Project, double>> averageEffectiveAreaExpression =
+    proj => proj.Subprojects
+                .Where(sp => sp.Area < 1000)
+                .Average(sp => sp.Area);
+
 var projects = await context.Projects
   .AsExpressionProjectable()
   .Select(p => new 
   {
     Project = p,
-    AEA = AverageEffectiveAreaExpression.Project(p)
+    AverageEffectiveArea = averageEffectiveAreaExpression.Project(p)
   })
   .ToListAsync();
 ```
