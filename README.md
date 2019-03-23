@@ -30,3 +30,11 @@ var projects = await context.Projects
 ## Installation
 
 Find this on NuGet: https://www.nuget.org/packages/EFLinqExpressionProjection
+
+---
+<p align="center">
+  <b>By Weiran Zhang</b><br>
+  <a href="https://weiran.co">Website</a> |
+  <a href="https://twitter.com/weiran">Twitter</a> |
+  <a href="https://github.com/weiran">GitHub</a>
+</p>
